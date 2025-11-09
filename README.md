@@ -23,6 +23,8 @@ npm run build
 
 ## GitHub Pages 배포
 
+`npm run build:pages` 명령을 실행하면 `npm run build`와 동시에 `out/` 폴더 전체가 `docs/`로 복사되어 Pages 소스로 바로 사용할 수 있습니다.  
+
 1. `npm run build` 실행 후 만들어진 `out/` 폴더를 Pages가 읽을 수 있는 위치로 업로드합니다.  
    - **Docs 폴더 방식**: `rm -rf docs && cp -R out docs` 후 `main` 브랜치 `docs/`를 Pages 소스로 지정합니다.  
    - **gh-pages 브랜치 방식**: `git worktree` 나 `peaceiris/actions-gh-pages` 등을 사용해 `out/` 내용을 `gh-pages` 브랜치에 커밋합니다.

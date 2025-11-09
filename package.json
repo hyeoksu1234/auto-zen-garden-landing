@@ -6,7 +6,8 @@
     "dev": "next dev -p 3004",
     "build": "next build",
     "start": "next start -p 3004",
-    "lint": "eslint"
+    "lint": "eslint",
+    "build:pages": "npm run build && rm -rf docs && cp -R out docs"
   },
   "dependencies": {
     "clsx": "^2.1.1",
