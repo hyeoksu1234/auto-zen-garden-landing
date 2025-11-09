@@ -1,36 +1,71 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Auto Zen Garden Landing
 
-## Getting Started
+AI 반려돌과의 대화를 샌드 아트로 번역하는 전시형 인터랙션의 랜딩 페이지입니다.  
+Next.js 15(App Router) + Tailwind 기반으로 구축했고, GitHub Pages에서 정적 호스팅할 수 있도록 최적화했습니다.
 
-First, run the development server:
+## 로컬 개발
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev           # http://localhost:3004
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+주요 컴포넌트는 `src/app/page.tsx`와 `src/data/moodMeter.ts`에 있습니다.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 프로덕션 빌드
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+```
 
-## Learn More
+`next.config.ts`의 `output: "export"` 설정 덕분에 위 명령만 실행하면 최종 정적 산출물이 `out/` 폴더에 생성됩니다.  
+`public/.nojekyll` 파일이 자동으로 복사되어 GitHub Pages에서도 `_next/*` 리소스가 차단되지 않습니다.
 
-To learn more about Next.js, take a look at the following resources:
+## GitHub Pages 배포
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. `npm run build` 실행 후 만들어진 `out/` 폴더를 Pages가 읽을 수 있는 위치로 업로드합니다.  
+   - **Docs 폴더 방식**: `rm -rf docs && cp -R out docs` 후 `main` 브랜치 `docs/`를 Pages 소스로 지정합니다.  
+   - **gh-pages 브랜치 방식**: `git worktree` 나 `peaceiris/actions-gh-pages` 등을 사용해 `out/` 내용을 `gh-pages` 브랜치에 커밋합니다.
+2. GitHub Pages 설정에서 `https://hyeoksu1234.github.io/auto-zen-garden-landing/` 주소를 사용하세요.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### GitHub Actions 예시
 
-## Deploy on Vercel
+```yaml
+name: Deploy Pages
+on:
+  push:
+    branches: [main]
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+      - run: npm run build
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+  deploy:
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
+```
+
+> `next.config.ts`는 Vercel 환경 변수(`VERCEL`)가 감지되면 `basePath`를 비활성화합니다. GitHub Pages처럼 하위 경로에 배포할 때는 별도 환경 변수 설정 없이도 `/auto-zen-garden-landing` 경로를 자동으로 사용합니다.
+
+## 다른 호스팅에 배포하고 싶다면?
+
+`next.config.ts`의 `basePath`/`assetPrefix` 설정을 프로젝트 루트에 맞게 조정하거나, Vercel처럼 도메인 루트에 배포하는 경우 `VERCEL=1 npm run build` 형태로 환경 변수를 지정해 basePath를 비활성화하면 됩니다.
