@@ -443,8 +443,11 @@ const translations: Record<Language, TranslationCopy> = {
   },
 };
 
+const ASSET_BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+const withAssetPath = (path: string) => `${ASSET_BASE_PATH}${path}`;
+
 const heroImage = {
-  src: "/img/main_5.png",
+  src: withAssetPath("/img/main_5.png"),
   alt: {
     ko: "흰 모래 위에서 감정 패턴을 그리는 기계 팔",
     en: "Robotic arm carving emotion patterns into the zen sand bed",
@@ -478,21 +481,21 @@ const whyCardImages: Array<{ src: string; alt: Record<Language, string> }> = [
 const pipelineStepImages: Array<{ src: string; alt: Record<Language, string> }> =
   [
     {
-      src: "/img/talk/1.png",
+      src: withAssetPath("/img/talk/1.png"),
       alt: {
         ko: "따뜻한 톤으로 반려돌과 대화하는 장면",
         en: "Conversational moment with the companion stone",
       },
     },
     {
-      src: "/img/talk/2.png",
+      src: withAssetPath("/img/talk/2.png"),
       alt: {
         ko: "감정 분석이 진행되는 인터페이스",
         en: "Emotion analysis interface in action",
       },
     },
     {
-      src: "/img/talk/3.png",
+      src: withAssetPath("/img/talk/3.png"),
       alt: {
         ko: "감정을 모래 패턴으로 그려내는 장면",
         en: "Capturing emotions as a sand pattern output",

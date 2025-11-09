@@ -15,6 +15,9 @@ const nextConfig: NextConfig = {
   trailingSlash: true,
   basePath,
   assetPrefix,
+  env: {
+    NEXT_PUBLIC_BASE_PATH: basePath ?? "",
+  },
   images: {
     unoptimized: true,
     remotePatterns: [
