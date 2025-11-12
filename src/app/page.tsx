@@ -506,24 +506,24 @@ const pipelineStepImages: Array<{ src: string; alt: Record<Language, string> }> 
 const ritualFeatureImages: Array<{ src: string; alt: Record<Language, string> }> =
   [
     {
-      src: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=520&q=80",
+      src: withAssetPath("/img/main_1.png"),
       alt: {
-        ko: "앱에서 감정 로그를 확인하는 손",
-        en: "Hand scrolling emotion log inside the app",
+        ko: "감정 로그 타임라인을 보여주는 앱 화면",
+        en: "App interface displaying the emotion log timeline",
       },
     },
     {
-      src: "https://images.unsplash.com/photo-1526481280695-3c469ecbf885?auto=format&fit=crop&w=520&q=80",
+      src: withAssetPath("/img/main_2.png"),
       alt: {
-        ko: "아카이브된 패턴 이미지를 전시한 갤러리",
-        en: "Gallery wall displaying archived pattern images",
+        ko: "감정 패턴이 전시된 히스토리 갤러리",
+        en: "History gallery showing archived sand patterns",
       },
     },
     {
-      src: "https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d?auto=format&fit=crop&w=520&q=80",
+      src: withAssetPath("/img/main_3.png"),
       alt: {
-        ko: "은은한 빛을 내는 AI 반려돌 스피커",
-        en: "AI companion speaker glowing softly",
+        ko: "반려돌의 대화 키워드를 되짚는 정원 장면",
+        en: "Companion stone ritual scene echoing conversation keywords",
       },
     },
   ];
