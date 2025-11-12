@@ -56,12 +56,6 @@ type TranslationCopy = {
       pleasantLow: string;
     };
   };
-  ritual: {
-    eyebrow: string;
-    title: string;
-    description: string;
-    features: { title: string; description: string }[];
-  };
   tech: {
     title: string;
     description: string;
@@ -88,7 +82,6 @@ const translations: Record<Language, TranslationCopy> = {
     nav: [
       { id: "why", label: "왜 Auto Zen Garden인가" },
       { id: "pipeline", label: "경험 흐름" },
-      { id: "ritual", label: "감정 리추얼" },
       { id: "library", label: "감정 라이브러리" },
       { id: "testimonials", label: "정원의 목소리" },
       { id: "faq", label: "FAQ" },
@@ -162,29 +155,6 @@ const translations: Record<Language, TranslationCopy> = {
         pleasantHigh: "즐거움",
         pleasantLow: "불편함",
       },
-    },
-    ritual: {
-      eyebrow: "앱 전용 기능",
-      title: "나만의 감정 리추얼이 되는 이유",
-      description:
-        "앱은 단발성 체험에 머무르지 않습니다. 반복 방문할수록 감정 히스토리가 쌓여 나만의 정원이 완성됩니다.",
-      features: [
-        {
-          title: "감정 로그 타임라인",
-          description:
-            "감정 분석 결과가 날짜별로 저장되어, 지난 패턴과 감정 변화를 한눈에 볼 수 있습니다.",
-        },
-        {
-          title: "패턴 히스토리 갤러리",
-          description:
-            "직접 체험한 모래 패턴이 이미지 클립으로 아카이빙되어 감정 지도처럼 누적됩니다.",
-        },
-        {
-          title: "돌의 부드러운 속삭임",
-          description:
-            "반려돌은 같은 질문을 반복하지 않고, 사용자의 키워드를 되짚어 주며 대화를 이어갑니다.",
-        },
-      ],
     },
     tech: {
       title: "조용한 안정성을 만드는 기술",
@@ -267,7 +237,6 @@ const translations: Record<Language, TranslationCopy> = {
     nav: [
       { id: "why", label: "Why Auto Zen Garden" },
       { id: "pipeline", label: "How It Flows" },
-      { id: "ritual", label: "Ritual Loop" },
       { id: "library", label: "Emotion Library" },
       { id: "testimonials", label: "Voices" },
       { id: "faq", label: "FAQ" },
@@ -341,29 +310,6 @@ const translations: Record<Language, TranslationCopy> = {
         pleasantHigh: "Pleasant",
         pleasantLow: "Unpleasant",
       },
-    },
-    ritual: {
-      eyebrow: "App-only rituals",
-      title: "Why the app becomes a personal sanctuary",
-      description:
-        "Beyond a single exhibit visit, your app keeps gathering feelings and patterns so the garden grows with you.",
-      features: [
-        {
-          title: "Emotion log timeline",
-          description:
-            "Every analysis is stored by session, helping you trace emotional shifts with ease.",
-        },
-        {
-          title: "Pattern history gallery",
-          description:
-            "Captured sand patterns live inside the app, forming a private atlas of your experiences.",
-        },
-        {
-          title: "Soft-spoken companion",
-          description:
-            "The AI stone avoids repetitive questions and reflects your keywords to keep the flow organic.",
-        },
-      ],
     },
     tech: {
       title: "Technology that keeps the calm",
@@ -499,31 +445,6 @@ const pipelineStepImages: Array<{ src: string; alt: Record<Language, string> }> 
       alt: {
         ko: "감정을 모래 패턴으로 그려내는 장면",
         en: "Capturing emotions as a sand pattern output",
-      },
-    },
-  ];
-
-const ritualFeatureImages: Array<{ src: string; alt: Record<Language, string> }> =
-  [
-    {
-      src: withAssetPath("/img/main_1.png"),
-      alt: {
-        ko: "감정 로그 타임라인을 보여주는 앱 화면",
-        en: "App interface displaying the emotion log timeline",
-      },
-    },
-    {
-      src: withAssetPath("/img/main_2.png"),
-      alt: {
-        ko: "감정 패턴이 전시된 히스토리 갤러리",
-        en: "History gallery showing archived sand patterns",
-      },
-    },
-    {
-      src: withAssetPath("/img/main_3.png"),
-      alt: {
-        ko: "반려돌의 대화 키워드를 되짚는 정원 장면",
-        en: "Companion stone ritual scene echoing conversation keywords",
       },
     },
   ];
@@ -867,62 +788,6 @@ export default function Home() {
             </div>
           </div>
           </section>
-
-          <section id="ritual" className="mb-28 scroll-mt-32">
-          <div className="rounded-[40px] bg-base-100 p-8 shadow-[0_32px_84px_rgba(51,50,57,0.08)] sm:p-12">
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-110px" }}
-              transition={{ duration: 0.7 }}
-              className="max-w-3xl"
-            >
-              <span className="inline-flex items-center rounded-full border border-base-900/10 bg-base-200 px-4 py-1 text-xs font-semibold uppercase tracking-[0.35em] text-base-900/70">
-                {copy.ritual.eyebrow}
-              </span>
-              <h2 className="mt-4 text-3xl font-semibold text-base-900 sm:text-4xl">
-                {copy.ritual.title}
-              </h2>
-              <p className="mt-4 text-base text-base-900/70 sm:text-lg">
-                {copy.ritual.description}
-              </p>
-            </motion.div>
-            <div className="mt-10 grid gap-6 lg:grid-cols-3">
-              {copy.ritual.features.map((feature, index) => {
-                const featureImage =
-                  ritualFeatureImages[index % ritualFeatureImages.length];
-                return (
-                  <motion.div
-                    key={feature.title}
-                    initial={{ opacity: 0, y: 24 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-110px" }}
-                    transition={{ duration: 0.6, delay: index * 0.06 }}
-                    className="rounded-3xl border border-base-900/10 bg-base-50/80 p-6 shadow-[0_20px_44px_rgba(51,50,57,0.08)] backdrop-blur-sm"
-                  >
-                    <div className="relative mb-4 h-32 overflow-hidden rounded-2xl border border-base-900/10 bg-base-200">
-                      <Image
-                        src={featureImage.src}
-                        alt={featureImage.alt[language]}
-                        fill
-                        sizes="(min-width: 1024px) 320px, (min-width: 640px) 260px, 220px"
-                        className="object-cover"
-                      />
-                      <div className="absolute inset-0 bg-base-900/10" />
-                    </div>
-                    <h3 className="text-lg font-semibold text-base-900">
-                      {feature.title}
-                    </h3>
-                    <p className="mt-3 text-sm text-base-900/65">
-                      {feature.description}
-                    </p>
-                  </motion.div>
-                );
-              })}
-            </div>
-          </div>
-          </section>
-
           <section id="library" className="mb-28 scroll-mt-32">
           <div className="rounded-[40px] bg-base-200 p-8 shadow-[0_36px_96px_rgba(51,50,57,0.08)] sm:p-12">
             <motion.div
