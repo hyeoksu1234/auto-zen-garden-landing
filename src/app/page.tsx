@@ -552,10 +552,12 @@ export default function Home() {
       window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
-    let timer: ReturnType<typeof window.setTimeout>;
+    let timer: number | null = null;
 
     const resetTimer = () => {
-      window.clearTimeout(timer);
+      if (timer !== null) {
+        window.clearTimeout(timer);
+      }
       timer = window.setTimeout(scrollToTop, INACTIVITY_DURATION);
     };
 
@@ -567,7 +569,9 @@ export default function Home() {
     resetTimer();
 
     return () => {
-      window.clearTimeout(timer);
+      if (timer !== null) {
+        window.clearTimeout(timer);
+      }
       activityEvents.forEach((event) =>
         window.removeEventListener(event, handleActivity),
       );
