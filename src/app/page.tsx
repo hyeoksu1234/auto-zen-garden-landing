@@ -534,6 +534,46 @@ export default function Home() {
     return () => window.clearInterval(interval);
   }, [testimonials]);
 
+  // If there is no interaction for ~1 minute, gently scroll visitors back to the top hero section.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const INACTIVITY_DURATION = 60_000;
+    const activityEvents: Array<keyof WindowEventMap> = [
+      "mousemove",
+      "mousedown",
+      "keydown",
+      "touchstart",
+      "wheel",
+    ];
+
+    const scrollToTop = () => {
+      if (window.scrollY === 0) return;
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+
+    let timer: ReturnType<typeof window.setTimeout>;
+
+    const resetTimer = () => {
+      window.clearTimeout(timer);
+      timer = window.setTimeout(scrollToTop, INACTIVITY_DURATION);
+    };
+
+    const handleActivity = () => resetTimer();
+
+    activityEvents.forEach((event) =>
+      window.addEventListener(event, handleActivity),
+    );
+    resetTimer();
+
+    return () => {
+      window.clearTimeout(timer);
+      activityEvents.forEach((event) =>
+        window.removeEventListener(event, handleActivity),
+      );
+    };
+  }, []);
+
   const navItems = useMemo(() => copy.nav, [copy.nav]);
 
   const activeTestimonial = testimonials[testimonialIndex];
