@@ -513,6 +513,24 @@ const quadrantOrder: MoodQuadrant[] = ["red", "yellow", "blue", "green"];
 const BADGES_PER_ROW = 4;
 const ROWS_PER_QUADRANT = 7;
 
+const supportsSmoothScroll = () => {
+  if (typeof document === "undefined") return false;
+  return "scrollBehavior" in document.documentElement.style;
+};
+
+const getScrollPosition = () => {
+  if (typeof window === "undefined") return 0;
+  if (typeof window.scrollY === "number") return window.scrollY;
+  if (typeof document !== "undefined") {
+    return (
+      document.documentElement.scrollTop ||
+      document.body.scrollTop ||
+      0
+    );
+  }
+  return 0;
+};
+
 export default function Home() {
   const [language, setLanguage] = useState<Language>("ko");
   const [testimonialIndex, setTestimonialIndex] = useState(0);
@@ -527,8 +545,14 @@ export default function Home() {
 
   const scrollToTop = useCallback(() => {
     if (typeof window === "undefined") return;
-    if (window.scrollY === 0) return;
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    const currentScroll = getScrollPosition();
+    if (currentScroll === 0) return;
+
+    if (supportsSmoothScroll()) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      window.scrollTo(0, 0);
+    }
   }, []);
 
   useEffect(() => {
@@ -587,7 +611,7 @@ export default function Home() {
     if (typeof window === "undefined") return;
 
     const handleScroll = () => {
-      setShowScrollTop(window.scrollY > 320);
+      setShowScrollTop(getScrollPosition() > 320);
     };
 
     handleScroll();
