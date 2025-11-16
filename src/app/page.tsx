@@ -518,9 +518,18 @@ export default function Home() {
   const [testimonialIndex, setTestimonialIndex] = useState(0);
   const [activeQuadrant, setActiveQuadrant] =
     useState<"all" | MoodQuadrant>("all");
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
   const copy = translations[language];
   const testimonials = copy.testimonials.items;
+  const backToTopText = language === "ko" ? "맨 위로" : "Back to top";
+  const backToTopAria = language === "ko" ? "페이지 최상단으로 이동" : "Scroll back to top";
+
+  const scrollToTop = useCallback(() => {
+    if (typeof window === "undefined") return;
+    if (window.scrollY === 0) return;
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
 
   useEffect(() => {
     setTestimonialIndex(0);
@@ -547,11 +556,6 @@ export default function Home() {
       "wheel",
     ];
 
-    const scrollToTop = () => {
-      if (window.scrollY === 0) return;
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    };
-
     let timer: number | null = null;
 
     const resetTimer = () => {
@@ -575,6 +579,22 @@ export default function Home() {
       activityEvents.forEach((event) =>
         window.removeEventListener(event, handleActivity),
       );
+    };
+  }, [scrollToTop]);
+
+  // Toggle the floating top button once visitors scroll past the hero section.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 320);
+    };
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
@@ -1165,6 +1185,26 @@ export default function Home() {
         {copy.footer.whisper}
       </footer>
 
+      <AnimatePresence>
+        {showScrollTop && (
+          <motion.button
+            key="scroll-to-top"
+            type="button"
+            onClick={scrollToTop}
+            aria-label={backToTopAria}
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 40 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-full border border-base-900/15 bg-base-50/90 px-4 py-2 text-sm font-semibold text-base-900 shadow-[0_18px_45px_rgba(51,50,57,0.2)] backdrop-blur"
+          >
+            <span className="text-lg leading-none" aria-hidden="true">
+              ↑
+            </span>
+            <span>{backToTopText}</span>
+          </motion.button>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
